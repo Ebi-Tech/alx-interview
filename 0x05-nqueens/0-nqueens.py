@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+'''N Queens Challenge'''
+
 import sys
 
 
@@ -22,25 +24,28 @@ def nqueens(n):
                 return False
         return True
 
-    def solve(board, col, solutions):
+    def solve(board, col, solutions, placed_queens):
         if col == n:
             solution = []
             for row in range(n):
-                solution.append(''.join(str(board[row][i]) for i in range(n)))
+                solution.append([row, placed_queens[row]])
             solutions.append(solution)
             return
         for row in range(n):
             if is_safe(board, row, col):
                 board[row][col] = 1
-                solve(board, col + 1, solutions)
+                placed_queens.append(row)
+                solve(board, col + 1, solutions, placed_queens)
                 board[row][col] = 0
+                placed_queens.pop()
 
     board = [[0 for i in range(n)] for j in range(n)]
     solutions = []
-    solve(board, 0, solutions)
+    placed_queens = []
+    solve(board, 0, solutions, placed_queens)
 
     for solution in solutions:
-        print(','.join(solution))
+        print(solution)
 
 
 if __name__ == '__main__':
