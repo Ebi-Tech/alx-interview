@@ -1,14 +1,25 @@
 #!/usr/bin/python3
-"""
-Main file for testing
+""" Making change 
 """
 
 
 def makeChange(coins, total):
-    dp = [0] + [float('inf')] * total
+    """ Returns fewest number of coins needed to meet total
+    """
 
-    for coin in coins:
-        for i in range(coin, total + 1):
-            dp[i] = min(dp[i], dp[i - coin] + 1)
+    if total <= 0:
+        return 0
+    else:
+        from math import trunc
 
-    return dp[total] if dp[total] != float('inf') else -1
+        coins = sorted(coins, reverse=True)
+        coin_dict = {}
+        while total is not None:
+            for c in coins:
+                if total % c == 0:
+                    coin_dict[c] = total / c
+                    return(int(sum(coin_dict.values())))
+                else:
+                    coin_dict[c] = trunc(total / float(c))
+                    total -= (c * coin_dict[c])
+            return -1
